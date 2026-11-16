@@ -101,7 +101,31 @@ An informative document about the workings of basic networking concepts like TCP
     - network address
     - local address
 - Local address of Internet address is divided into a subnet number and a host number.
-<!-- finish -->
+- Subnet addresses are created by dividing the local address into a number that ids the physical network/subnet & a number that ids the host.
+    - Senders pass info to network address -> local system manages routing subnets
+        and the messages being sent to them as well as their hosts.
+- Assignment of subnet addresses and host addresses are flexible, minus a few
+    restrictions:
+    - network_address -> Internet address of the network
+    - subnet_address -> constant width for a specified network
+        - if set to 0, the network doesn't have subnets
+            - addressing the network uses the Internet network address
+        - identified through a bit mask (not adjacent in the address)
+            - It is preferable to keep subnet bits consistent and addressed as the
+                most significant bit of local_address
+    - host_address -> minimum 1 bit wide
+
+- Subnet masks
+    - When messages are sent, the system evaluates both the same network
+        and local interfaces to determine the destination.
+    - This comparison is done using the subnet mask
+
+| Network Address (8 bits) | Local Host Address (24 bits) | - |
+| ------------------------- | --------------------------- |
+| - | Subnet Address | Host Address |
+| 01111101 | 00001101 0100 | 1001 00001111 |
+| 125 | 13 4 | 9 15 |
+| 125 | 13 73 15 | - |
 
 ## TCP/IP routing
 
