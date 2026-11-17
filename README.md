@@ -115,17 +115,70 @@ An informative document about the workings of basic networking concepts like TCP
                 most significant bit of local_address
     - host_address -> minimum 1 bit wide
 
-- Subnet masks
-    - When messages are sent, the system evaluates both the same network
-        and local interfaces to determine the destination.
-    - This comparison is done using the subnet mask
-
 | Network Address (8 bits) | Local Host Address (24 bits) | - |
-| ------------------------- | --------------------------- |
+| ------------------------- | --------------------------- | --------------------------- |
 | - | Subnet Address | Host Address |
 | 01111101 | 00001101 0100 | 1001 00001111 |
 | 125 | 13 4 | 9 15 |
 | 125 | 13 73 15 | - |
+
+- Subnet masks
+    - When messages are sent, the system evaluates both the same network
+        and local interfaces to determine the destination.
+    - This comparison is done using the subnet mask
+    - Set of 4 bytes.
+        - Mostly higher bits (1's)
+            - For the network and subnetwork address
+        - Then low bits (0)'s
+            - Bit positions of the host address
+
+| Network Address (8 bits) | Local Host Address (24 bits) | - |
+| ------------------------- | --------------------------- | --------------------------- |
+| Network Address | Subnet Address | Host Address |
+| 11111111 | 11111111 1111 | 0000 00000000 |
+| 255 | 255 15 | 0 0 |
+| 255 | 255 240 0 | - |
+
+    - Subnet masks can be represented using a Full IP mask or with a CIDR
+        (Classless Inter-Domain Routing)
+    255.255.255.255 -> /32 (maximum IP mask & prefix)
+    0.0.0.0 -> /0 (minimum IP mask & prefix)
+
+| CIDR (prefix) | Subnet Mask | Bits | IP Addresses |
+| ------------------------- | --------------------------- | ------------------------- | --------------------------- |
+| /32 | 255.255.255.255 | 0 | 1 |
+| /31 | 255.255.255.254 | 1 | 2 |
+| /30 | 255.255.255.252 | 2 | 4 |
+| /29 | 255.255.255.248 | 3 | 8 |
+| /28 | 255.255.255.240 | 4 | 16 |
+| /27 | 255.255.255.224 | 5 | 32 |
+| /26 | 255.255.255.192 | 6 | 64 |
+| /25 | 255.255.255.128 | 7 | 128 |
+| /24 | 255.255.255.0 | 8 | 256 |
+| /23 | 255.255.254.0 | 9 | 512 |
+| /22 | 255.255.252.0 | 10 | 1 k |
+| /21 | 255.255.248.0 | 11 | 2 k |
+| /20 | 255.255.240.0 | 12 | 4 k |
+| /19 | 255.255.224.0 | 13 | 8 k |
+| /18 | 255.255.192.0 | 14 | 16 k |
+| /17 | 255.255.128.0 | 15 | 32 k |
+| /16 | 255.255.0.0 | 16 | 64 K |
+| /15 | 255.254.0.0 | 17 | 128 K |
+| /14 | 255.252.0.0 | 18 | 256 K |
+| /13 | 255.248.0.0 | 19 | 512 K |
+| /12 | 255.240.0.0 | 20 | 1 M |
+| /11 | 255.224.0.0 | 21 | 2 M |
+| /10 | 255.192.0.0 | 22 | 4 M |
+| /9 | 255.128.0.0 | 23 | 8 M |
+| /8 | 255.0.0.0 | 24 | 16 M |
+| /7 | 254.0.0.0 | 25 | 32 M |
+| /6 | 252.0.0.0 | 26 | 64 M |
+| /5 | 248.0.0.0 | 27 | 128 M |
+| /4 | 240.0.0.0 | 28 | 256 M |
+| /3 | 224.0.0.0 | 29 | 512 M |
+| /2 | 192.0.0.0 | 30 | 1024 M |
+| /1 | 128.0.0.0 | 31 | 2048 M |
+| /0 | 0.0.0.0 | 32 | 4096 M |
 
 ## TCP/IP routing
 
@@ -147,4 +200,30 @@ An informative document about the workings of basic networking concepts like TCP
       - To subnet address
       - To broadcast address of the subnet
 
+## Routers VS Switches
 
+### Switches
+
+Primarily used for distributing packets to and from devices in the same network
+
+- LANs - Local Area Networks
+- No direct interface as it does not need to communicate with external networks.
+
+### Routers
+
+Responsible for connecting multiple networks.
+- multiple LANs connected to each other, LAN(s) connected to the Internet, etc.
+- each router has multiple interfaces, one for each network it is linked with.
+- due to multiple netwroks being linked these interfaces should manage address
+    range and subnet masks carefully to avoid overlap.
+
+## OSI Layer
+
+The OSI (Open Systems Interconnection) model is a conceptual framework made out of 7 layers.
+- The applicable layers for this document/project are:
+    - Layer 4: Transport layer
+        - manage end-to-end communiation and flow control
+        - TCP protocol
+    - Layer 3: Network layer
+        - manages addressing and routing packets across networks
+        - IP protocol
